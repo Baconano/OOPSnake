@@ -1,4 +1,4 @@
-import javax.swin.*;
+import javax.swing.*;
 
 public class APP{
     public static void main(string[] args) throws Exception{
