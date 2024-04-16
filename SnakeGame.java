@@ -25,6 +25,9 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
     //food
     Tile food;
     Random random;
+    
+    //bad food
+    Tile badfood;
 
     //game logic
     Timer gameLoop;
@@ -43,6 +46,7 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
         snakeHead = new Tile(5,5);
         snakeBody = new ArrayList<Tile>();
         food = new Tile(10,10);
+        badfood = new Tile(10,10);
         random = new Random();
         placeFood();
 
@@ -67,6 +71,10 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
         g.setColor(Color.red);
         g.fillRect(food.x*tileSize,food.y*tileSize,tileSize,tileSize);
 
+        //bad food
+        g.setColor(Color.blue);
+        g.fillRect(badfood.x*tileSize,badfood.y*tileSize,tileSize,tileSize);
+
         //snake head
         g.setColor(Color.green);
         g.fillRect(snakeHead.x*tileSize,snakeHead.y*tileSize,tileSize ,tileSize);
@@ -90,6 +98,12 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
         food.x = random.nextInt(boardWidth/tileSize);
         food.y = random.nextInt(boardWidth/tileSize);
     }
+
+    public void placeBadFood(){
+        badfood.x=random.nextInt(boardWidth/tileSize);
+        badfood.y=random.nextInt(boardWidth/tileSize);
+    }
+
     public boolean collision(Tile tile1, Tile tile2){
         return tile1.x == tile2.x && tile1.y == tile2.y;
     }
@@ -98,6 +112,15 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
         if(collision(snakeHead, food)){
             snakeBody.add(new Tile(food.x, food.y));
             placeFood();
+        }
+        if(collision(snakeHead, badfood)){
+            if (snakeBody.size() == 0) {
+                // Game over if snake's length is 1
+                gameOver = true;
+            } else {
+                snakeBody.remove(0); // Subtract from the snake's length
+            }
+            placeBadFood();
         }
         //Snake Body
         for (int i= snakeBody.size()-1;i >=0; i--){
