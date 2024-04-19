@@ -131,6 +131,7 @@ public class Menu extends JPanel implements ActionListener,KeyListener{
             g.drawString("Extra Options" , boardWidth/2-48, boardHeight/2);
             g.drawString("Quit" , boardWidth/2-18, 4*boardHeight/6);
         }
+        System.out.println(pick);
     }
     public void MenuExpansion(){
         startOption.x = boardWidth;

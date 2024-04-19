@@ -20,13 +20,22 @@ public class app {
         frame.pack();
         TestMenu.requestFocus();
         
-        
-        if(TestMenu.getPicked() != -1){
-        SnakeGame snakeGame = new SnakeGame(boardwidth, boardheight);
-        frame.add(snakeGame);
-        frame.pack();
-        snakeGame.requestFocus();
+        if(TestMenu.getPicked() == -1){
+            frame.remove(TestMenu);
+            
         }
+        if(TestMenu.getPicked() != 0 && TestMenu.getPicked() != -1){
+            frame.remove(TestMenu);
+            
+            SnakeGame snakeGame = new SnakeGame(boardwidth, boardheight);
+            
+            frame.setIconImage(snakeGame);
+
+            frame.add(snakeGame);
+            frame.pack();
+            snakeGame.requestFocus();
+        }
+        
         
         }
         
