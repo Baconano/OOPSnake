@@ -15,26 +15,26 @@ public class app {
         
         
         //JFrame frame2 = new JFrame("test menu");
-        Menu TestMenu = new Menu(boardwidth,boardheight);
-        frame.add(TestMenu);
-        frame.pack();
-        TestMenu.requestFocus();
+        //Menu TestMenu = new Menu(boardwidth,boardheight);
+        //frame.add(TestMenu);
+        //frame.pack();
+        //TestMenu.requestFocus();
         
-        if(TestMenu.getPicked() == -1){
-            frame.remove(TestMenu);
+        //if(TestMenu.getPicked() == -1){
+            //frame.remove(TestMenu);
             
-        }
-        if(TestMenu.getPicked() != 0 && TestMenu.getPicked() != -1){
-            frame.remove(TestMenu);
+        //}
+        //if(TestMenu.getPicked() != 0 && TestMenu.getPicked() != -1){
+            //frame.remove(TestMenu);
             
             SnakeGame snakeGame = new SnakeGame(boardwidth, boardheight);
             
-            frame.setIconImage(snakeGame);
+            
 
             frame.add(snakeGame);
             frame.pack();
             snakeGame.requestFocus();
-        }
+        //}
         
         
         }
