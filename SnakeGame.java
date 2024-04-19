@@ -161,6 +161,7 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
             gameLoop.stop();
         }
     }
+    
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_UP && velocityY != 1){

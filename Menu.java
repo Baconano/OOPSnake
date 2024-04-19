@@ -1,4 +1,4 @@
-/*
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -246,4 +246,3 @@ public class Menu extends JPanel implements ActionListener,KeyListener{
         }
     }
 }
-*/
