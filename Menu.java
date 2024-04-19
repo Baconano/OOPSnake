@@ -15,6 +15,9 @@ public class Menu extends JPanel implements ActionListener,KeyListener{
                 this.y = y;
             }
         }
+    //Will move block back when choosing options
+    private int chekingOnce = 1;
+
     int boardWidth;
     int boardHeight;
     int Size = 25;
@@ -52,9 +55,9 @@ public class Menu extends JPanel implements ActionListener,KeyListener{
         setFocusable(true);
 
         mouse = new Tile(3,3);
-        startOption = new Tile(boardWidth/2-65,boardHeight/3 -18);
-        diffOption = new Tile(boardWidth/2-93, boardHeight/2 - 18);
-        quitOption = new Tile(boardWidth/2-63, 4*boardHeight/6 - 18);
+        startOption = new Tile((boardWidth/2-65)/25,(boardHeight/3 - 18)/25);
+        diffOption = new Tile((boardWidth/2-93)/25, (boardHeight/2 - 18)/25);
+        quitOption = new Tile((boardWidth/2-63)/25, (4*boardHeight/6 - 18)/25);
 
         colorChange = new Tile(boardWidth, boardHeight);
         hardMode = new Tile(boardWidth, boardHeight);
@@ -71,14 +74,6 @@ public class Menu extends JPanel implements ActionListener,KeyListener{
         super.paintComponent(g);
         drawMenu(g);
     }
-    public void MenuExpansion(){
-        colorChange.x = boardWidth/2 - 40;
-        colorChange.y = boardHeight/2;
-        hardMode.x = boardWidth/2 -40;
-        hardMode.y = boardWidth/3;
-        easyMode.x = boardWidth/2 - 40;
-        easyMode.y = 2 * boardWidth/3;
-    }
     //Drawing menu 
     public void drawMenu(Graphics g){
         //grid from SnakeGame.java also
@@ -92,35 +87,43 @@ public class Menu extends JPanel implements ActionListener,KeyListener{
         g.fillRect(mouse.x*Size,mouse.y*Size,Size ,Size);
         
         //Menu Pick options
+
+        if(!diffMenu & !quit){
         g.setColor(Color.red);
         g.fillRect(boardWidth/2-65,boardHeight/3 -18, Size, Size);
         g.setColor(Color.blue);
         g.fillRect(boardWidth/2-93, boardHeight/2 - 18, Size, Size);
         g.setColor(Color.orange);
         g.fillRect(boardWidth/2-63, 4*boardHeight/6 - 18, Size, Size);
-        
+        }
 
         //Score
         g.setColor(Color.white);
         g.setFont(new Font("Arial",Font.PLAIN,15));
-        g.drawString("Snake Game",boardWidth/2  - 42, Size);
         //g.setFont(new Font("Arial", Font.PLAIN, 15))
+        if(!diffMenu && !quit){
+        g.drawString("Snake Game",boardWidth/2  - 42, Size);
         g.drawString("The green square is you the \"the player\"",boardWidth/3 - 15, Size+30);
         g.drawString("The red square is food to grow",boardWidth/3 + 10, Size +48);
         g.drawString("The blue square will shrink you",boardWidth/3 + 10, Size + 66);
         g.drawString("The orange square will kill you",boardWidth/3 + 10, Size + 84 );
+        }
         if(quit){
-            g.drawString("Bye Bye!", boardWidth/2, boardHeight/2);
+            g.drawString("Bye Bye!", boardWidth/2-48, boardHeight/2);
         }
         else if (diffMenu){
             MenuExpansion();
-            g.fillRect(colorChange.x*Size, colorChange.y*Size, Size, Size);
-            g.fillRect(hardMode.x*Size, hardMode.y*Size, Size, Size);
-            g.fillRect(easyMode.x*Size, easyMode.y*Size, Size, Size);
-            g.drawString("Any picks will start the game automatically", boardWidth/2, Size);
-            g.drawString("Random color change", boardWidth/2, boardHeight/2);
-            g.drawString("Hard mode (increased speed)" , boardWidth/2, boardHeight/3);
-            g.drawString("Easy mode (no blue fruits)" , boardWidth/2, boardHeight/4);
+            g.setColor(Color.red);
+            g.fillRect(boardWidth/2-95,boardHeight/3 -18, Size, Size);//Color change
+            g.setColor(Color.blue);
+            g.fillRect(boardWidth/2-100, boardHeight/2 - 18, Size, Size);//Hard
+            g.setColor(Color.yellow);
+            g.fillRect(boardWidth/2-100, 4*boardHeight/6 - 20, Size, Size);//Easy?
+            g.setColor(Color.white);
+            g.drawString("Any picks will start the game automatically", boardWidth/3 -15, Size+30);
+            g.drawString("Random color change", boardWidth/2-60, boardHeight/3);
+            g.drawString("Hard mode (increased speed)" , boardWidth/2-65, boardHeight/2);
+            g.drawString("Easy mode (no blue fruits)" , boardWidth/2-65, 4*boardHeight/6);
         }
         else{
             g.setColor(Color.white);
@@ -129,11 +132,21 @@ public class Menu extends JPanel implements ActionListener,KeyListener{
             g.drawString("Quit" , boardWidth/2-18, 4*boardHeight/6);
         }
     }
-    
+    public void MenuExpansion(){
+        startOption.x = boardWidth;
+        diffOption.x = boardWidth;
+        quitOption.x = boardWidth;
+        colorChange.x = (boardWidth/2 - 95)/Size;
+        colorChange.y = (boardHeight/3 - 18)/Size;
+        hardMode.x = (boardWidth/2 -100)/Size;
+        hardMode.y = (boardWidth/2 -18)/Size;
+        easyMode.x = (boardWidth/2 - 100)/Size;
+        easyMode.y = (2 * boardWidth/3 - 20)/Size;
+    }
     //Collision logic borrowed from SnakeGame.java
     //Change collision
     public boolean collision(Tile tile1, Tile tile2){
-        return tile1.x > tile2.x-1 && tile1.x < tile2.x+Size;
+        return tile1.x == tile2.x && tile1.y == tile2.y;
     }
     public int menuChosen(){
         if(collision(mouse,colorChange)){
@@ -154,8 +167,11 @@ public class Menu extends JPanel implements ActionListener,KeyListener{
     public void move(){
         //Picks
         if(collision(mouse, quitOption)){
-            quit = true;
+            System.out.println("Get here");
             pick = -1;
+            mouse.x = 3;
+            mouse.y = 3;
+            quit = true;
         }
         if(collision(mouse, startOption)){
             start = true;
@@ -167,17 +183,16 @@ public class Menu extends JPanel implements ActionListener,KeyListener{
         //Extra picks
         if(diffMenu){
            pick = menuChosen();
+           if(chekingOnce == 1){
+                chekingOnce = 2;
+                mouse.x = 3;
+                mouse.y = 3;
+           }
         }
 
         mouse.x += velocityX;
         mouse.y += velocityY;
 
-    }
-    boolean menuDies(){
-        if(quit || start)
-            return true;
-        else
-            return false;
     }
     public int getPicked(){
         return pick;
@@ -187,7 +202,7 @@ public class Menu extends JPanel implements ActionListener,KeyListener{
     public void actionPerformed(ActionEvent e){
         move();
         repaint();
-        if (menuDies()){
+        if (quit || start){
             keep.stop();
         }
     }
