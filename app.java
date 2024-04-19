@@ -12,7 +12,7 @@ public class app {
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        /* 
+        
         
         //JFrame frame2 = new JFrame("test menu");
         Menu TestMenu = new Menu(boardwidth,boardheight);
@@ -20,13 +20,13 @@ public class app {
         frame.pack();
         TestMenu.requestFocus();
         
-        */
-        //if(TestMenu.getPicked() != -1)
+        
+        if(TestMenu.getPicked() != -1){
         SnakeGame snakeGame = new SnakeGame(boardwidth, boardheight);
         frame.add(snakeGame);
         frame.pack();
         snakeGame.requestFocus();
-          
+        }
         
         }
         
