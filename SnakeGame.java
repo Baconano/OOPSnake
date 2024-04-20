@@ -40,7 +40,10 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
     boolean v2 = false;
     boolean v3 = false;
     int delay = 100;
-    int randomNum = 0;
+    Color randomColor = Color.green;
+    int r = 0;
+    int g = 0;
+    int b = 0;
     SnakeGame(int boardWidth, int boardHeight, int version) {
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
@@ -71,7 +74,25 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
         gameLoop.start();
     }
     public void randomize(){
-        randomNum = random.nextInt(3);
+        r = (int)(Math.random()*155)+100;
+        g = (int)(Math.random()*155)+100;
+        b = (int)(Math.random()*155)+100;
+        randomColor = new Color(r,g,b);
+        /* 
+        if(r == 0){
+            System.out.println("Orange chosen");
+            randomColor = Color.orange;
+        }
+        if(r == 1){
+            randomColor = Color.pink;
+            System.out.println("Pink chosen");
+
+        }
+        if(r == 2){
+            System.out.println("Cyan chosen");
+            randomColor = Color.cyan;
+        }
+        */
     }
 
     public void paintComponent(Graphics g){
@@ -94,7 +115,7 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
         g.fillRect(badfood.x*tileSize,badfood.y*tileSize,tileSize,tileSize);
 
         //snake head
-        g.setColor(Color.green);
+        g.setColor(randomColor);
         g.fillRect(snakeHead.x*tileSize,snakeHead.y*tileSize,tileSize ,tileSize);
 
         //snake body

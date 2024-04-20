@@ -29,7 +29,7 @@ public class app {
             //Version 2: Hard, increased speed
             //Version 3: Easy, no shrink fruit
             //Version 5: How it is right now
-            SnakeGame snakeGame = new SnakeGame(boardwidth, boardheight,3);
+            SnakeGame snakeGame = new SnakeGame(boardwidth, boardheight,1);
             
             
 
