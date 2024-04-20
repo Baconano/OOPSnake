@@ -35,13 +35,24 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
     int velocityY;
     boolean gameOver=false;
 
-    SnakeGame(int boardWidth, int boardHeight) {
+    int Version;
+    boolean v1 = false;
+    boolean v2 = false;
+    boolean v3 = false;
+    int delay = 100;
+    int randomNum = 0;
+    SnakeGame(int boardWidth, int boardHeight, int version) {
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
         setPreferredSize(new Dimension(this.boardWidth,this.boardHeight));
         setBackground(Color.black);
         addKeyListener(this);
         setFocusable(true);
+
+        Version = version;
+        checkVersion(version);
+        if(v1)
+            randomize();
 
         snakeHead = new Tile(5,5);
         snakeBody = new ArrayList<Tile>();
@@ -50,10 +61,17 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
         random = new Random();
         placeFood();
 
+        if(v2)
+            delay = 50;
+        if(v3)
+            delay = 200;
         velocityX = 0;
         velocityY =0;
-        gameLoop = new Timer(100, this);
+        gameLoop = new Timer(delay, this);
         gameLoop.start();
+    }
+    public void randomize(){
+        randomNum = random.nextInt(3);
     }
 
     public void paintComponent(Graphics g){
@@ -152,7 +170,14 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
             gameOver =true;
         }
     }
-
+    public void checkVersion(int v){
+        if(v == 1)
+            v1 = true;
+        if(v ==2)
+            v2= true;
+        if(v==3)
+            v3=true;
+    }
     @Override
     public void actionPerformed(ActionEvent e){
         move();

@@ -123,7 +123,7 @@ public class Menu extends JPanel implements ActionListener,KeyListener{
             g.drawString("Any picks will start the game automatically", boardWidth/3 -15, Size+30);
             g.drawString("Random color change", boardWidth/2-60, boardHeight/3);
             g.drawString("Hard mode (increased speed)" , boardWidth/2-65, boardHeight/2);
-            g.drawString("Easy mode (no blue fruits)" , boardWidth/2-65, 4*boardHeight/6);
+            g.drawString("Easy mode (decreased speed)" , boardWidth/2-65, 4*boardHeight/6);
         }
         else{
             g.setColor(Color.white);
@@ -131,7 +131,7 @@ public class Menu extends JPanel implements ActionListener,KeyListener{
             g.drawString("Extra Options" , boardWidth/2-48, boardHeight/2);
             g.drawString("Quit" , boardWidth/2-18, 4*boardHeight/6);
         }
-        System.out.println(pick);
+        //System.out.println(pick);
     }
     public void MenuExpansion(){
         startOption.x = boardWidth;
@@ -168,13 +168,14 @@ public class Menu extends JPanel implements ActionListener,KeyListener{
     public void move(){
         //Picks
         if(collision(mouse, quitOption)){
-            System.out.println("Get here");
+            //System.out.println("Get here");
             pick = -1;
             mouse.x = 3;
             mouse.y = 3;
             quit = true;
         }
         if(collision(mouse, startOption)){
+            pick = 5;
             start = true;
         }
         if(collision(mouse, diffOption)){
