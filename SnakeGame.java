@@ -120,6 +120,7 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
 
         //snake body
         for (int i=0; i< snakeBody.size(); i++){
+            //g.setColor(Color.green);
             Tile snakePart = snakeBody.get(i);
             g.fillRect(snakePart.x *tileSize, snakePart.y*tileSize,tileSize,tileSize);
         }
