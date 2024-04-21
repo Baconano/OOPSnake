@@ -13,10 +13,10 @@ public class app {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         
-            //Version 1: Random Color Change
-            //Version 2: Hard, increased speed
-            //Version 3: Easy, no shrink fruit
-            //Version 5: How it is right now
+            //Version 1: Easy mode, only red fruit and slower speed
+            //Version 2: Medium mode, red fruit + shrink fruit, normal speed of 150
+            //Version 3: Hard mode, all fruits (death) and increased speed
+            //Color Change: Randomize color change without letting user know
             SnakeGame snakeGame = new SnakeGame(boardwidth, boardheight,4);
             
             

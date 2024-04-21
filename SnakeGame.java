@@ -38,14 +38,14 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener,Mous
     int velocityX;
     int velocityY;
     boolean gameOver=false;
-
+    //Version changes and options
     int Version;
     boolean v1 = false;
     boolean v2 = false;
     boolean v3 = false;
     int delay = 100;
     Color randomColor = Color.green;
-    Color randomColorKeep = Color.white;
+    //Making color
     int r = 0;
     int g = 0;
     int b = 0;
@@ -156,7 +156,7 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener,Mous
         g.fillRect(Medium.x*tileSize, Medium.y*tileSize, tileSize, tileSize);
         g.setColor(Color.orange);
         g.fillRect(Hard.x*tileSize, Hard.y*tileSize, tileSize, tileSize);
-        g.setColor(randomColorKeep);
+        g.setColor(Color.white);
         g.fillRect(color.x*tileSize,color.y*tileSize,tileSize,tileSize);
     
     
@@ -356,7 +356,6 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener,Mous
         g = (int)(Math.random()*155)+100;
         b = (int)(Math.random()*155)+100;
         randomColor = new Color(r,g,b);
-        randomColorKeep = new Color(r,g,b);
     }
 }    
     //NOT NEEDED, DO NOT MODIFY
