@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
 
-public class SnakeGame extends JPanel implements ActionListener,KeyListener{
+public class SnakeGame extends JPanel implements ActionListener,KeyListener,MouseListener{
     private class Tile{
         int x;
         int y;
@@ -25,10 +25,13 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
     //food
     Tile food;
     Random random;
-    
+    //Verion Tiles;
+    Tile Easy;
+    Tile Medium;
+    Tile Hard;
     //bad food
     Tile badfood;
-
+    Tile instantfood;
     //game logic
     Timer gameLoop;
     int velocityX;
@@ -50,6 +53,7 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
         setPreferredSize(new Dimension(this.boardWidth,this.boardHeight));
         setBackground(Color.black);
         addKeyListener(this);
+        addMouseListener(this);
         setFocusable(true);
 
         Version = version;
@@ -59,10 +63,15 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
 
         snakeHead = new Tile(5,5);
         snakeBody = new ArrayList<Tile>();
-        food = new Tile(10,10);
-        badfood = new Tile(10,10);
+        food = new Tile(10,100);
+        badfood = new Tile(10,101);
+        instantfood = new Tile(10,102);
         random = new Random();
-        placeFood();
+        Easy = new Tile(10,5);
+        Medium = new Tile(10,10);
+        Hard = new Tile(10,15);
+        
+        
 
         if(v2)
             delay = 50;
@@ -70,15 +79,17 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
             delay = 200;
         velocityX = 0;
         velocityY =0;
+        /* 
         gameLoop = new Timer(delay, this);
         gameLoop.start();
+         */
     }
     public void randomize(){
         r = (int)(Math.random()*155)+100;
         g = (int)(Math.random()*155)+100;
         b = (int)(Math.random()*155)+100;
         randomColor = new Color(r,g,b);
-        /* 
+        
         if(r == 0){
             System.out.println("Orange chosen");
             randomColor = Color.orange;
@@ -92,7 +103,7 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
             System.out.println("Cyan chosen");
             randomColor = Color.cyan;
         }
-        */
+        
     }
 
     public void paintComponent(Graphics g){
@@ -113,7 +124,9 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
         //bad food
         g.setColor(Color.blue);
         g.fillRect(badfood.x*tileSize,badfood.y*tileSize,tileSize,tileSize);
-
+        //Instant dead food
+        g.setColor(Color.orange);
+        g.fillRect(instantfood.x*tileSize,instantfood.y*tileSize,tileSize,tileSize);
         //snake head
         g.setColor(randomColor);
         g.fillRect(snakeHead.x*tileSize,snakeHead.y*tileSize,tileSize ,tileSize);
@@ -133,7 +146,26 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
         else{
             g.drawString("Score: " + String.valueOf(snakeBody.size()), tileSize -16, tileSize);
         }
-    }
+
+        g.setColor(Color.red);
+        g.fillRect(Easy.x*tileSize,Easy.y*tileSize, tileSize, tileSize);
+        g.setColor(Color.blue);
+        g.fillRect(Medium.x*tileSize, Medium.y*tileSize, tileSize, tileSize);
+        g.setColor(Color.orange);
+        g.fillRect(Hard.x*tileSize, Hard.y*tileSize, tileSize, tileSize);
+    
+    
+            //Score
+            g.setColor(Color.white);
+            g.setFont(new Font("Arial",Font.PLAIN,15));
+            //g.setFont(new Font("Arial", Font.PLAIN, 15))
+            g.drawString("Snake Game",boardWidth/2  - 42, tileSize);
+            g.drawString("The green square is you the \"the player\"",boardWidth/3 - 15, tileSize+30);
+            g.drawString("The red square is food to grow",boardWidth/3 + 10, tileSize +48);
+            g.drawString("The blue square will shrink you",boardWidth/3 + 10, tileSize + 66);
+            g.drawString("The orange square will kill you",boardWidth/3 + 10, tileSize + 84 );
+        }
+    
     public void placeFood(){
         food.x = random.nextInt(boardWidth/tileSize);
         food.y = random.nextInt(boardWidth/tileSize);
@@ -143,7 +175,10 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
         badfood.x=random.nextInt(boardWidth/tileSize);
         badfood.y=random.nextInt(boardWidth/tileSize);
     }
-
+    public void placeInstantFood(){
+        instantfood.x=random.nextInt(boardWidth/tileSize);
+        instantfood.y=random.nextInt(boardWidth/tileSize);
+    }
     public boolean collision(Tile tile1, Tile tile2){
         return tile1.x == tile2.x && tile1.y == tile2.y;
     }
@@ -152,6 +187,13 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
         if(collision(snakeHead, food)){
             snakeBody.add(new Tile(food.x, food.y));
             placeFood();
+            if(v2 == true){
+                placeBadFood();
+            }
+            if(v3 == true){
+                placeBadFood();
+                placeInstantFood();
+            }
         }
         if(collision(snakeHead, badfood)){
             if (snakeBody.size() == 0) {
@@ -161,6 +203,9 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
                 snakeBody.remove(0); // Subtract from the snake's length
             }
             placeBadFood();
+        }
+        if(collision(snakeHead,instantfood)){
+            gameOver=true;
         }
         //Snake Body
         for (int i= snakeBody.size()-1;i >=0; i--){
@@ -227,12 +272,74 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
             velocityX =-1;
             velocityY =0;
         }
+        else if(e.getKeyCode() == KeyEvent.VK_1){
+            badfood = new Tile(10,10);
+            instantfood = new Tile(20,20);
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_2){
+            r = (int)(Math.random()*155)+100;
+            g = (int)(Math.random()*155)+100;
+            b = (int)(Math.random()*155)+100;
+            randomColor = new Color(r,g,b);
+        }
     }
-    //Do Not Need
+    @Override
+    public void mouseClicked(MouseEvent e)
+{
+    int mouseX=e.getX();
+    int mouseY=e.getY();
+
+    if (mouseX >= Easy.x*tileSize && mouseX <(Easy.x+1)*tileSize && mouseY >= Easy.y*tileSize && mouseY < (Easy.y+1) *tileSize){
+        Easy = new Tile(100,100);
+        Medium = new Tile (100, 100);
+        Hard = new Tile (100, 100);
+        delay = 150;
+        v1 =true ;
+        v2 = false;
+        v3 = false;
+        gameLoop = new Timer(delay, this);
+        gameLoop.start();
+        placeFood();
+    }else if (mouseX >= Medium.x*tileSize && mouseX <(Medium.x+1)*tileSize && mouseY >= Medium.y*tileSize && mouseY < (Medium.y+1) *tileSize){
+        Easy = new Tile(100,100);
+        Medium = new Tile (100, 100);
+        Hard = new Tile (100, 100);
+        v1 = false;
+        v2= true ;
+        v3 = false;
+        gameLoop = new Timer(delay, this);
+        gameLoop.start();
+        placeFood();
+        placeBadFood();
+    }else if(mouseX >= Hard.x*tileSize && mouseX <(Hard.x+1)*tileSize && mouseY >= Hard.y*tileSize && mouseY < (Hard.y+1) *tileSize){
+        Easy = new Tile(100,100);
+        Medium = new Tile (100, 100);
+        Hard = new Tile (100, 100);
+        delay= 50;
+        v3= true;
+        gameLoop = new Timer(delay, this);
+        gameLoop.start();
+        placeFood();
+        placeBadFood();
+        placeInstantFood();
+    }
+}    //Do Not Need
     @Override
     public void keyTyped(KeyEvent e) {
     }
     @Override
     public void keyReleased(KeyEvent e) {
+    }
+    @Override
+    public void mousePressed(MouseEvent e){
+    }
+    @Override
+    public void mouseReleased(MouseEvent e){
+    }
+    @Override
+    public void mouseEntered(MouseEvent e){
+    }
+    @Override
+    public void mouseExited(MouseEvent e){
     }
 }
