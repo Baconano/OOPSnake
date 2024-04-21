@@ -32,6 +32,7 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener,Mous
     //bad food
     Tile badfood;
     Tile instantfood;
+    Tile color;
     //game logic
     Timer gameLoop;
     int velocityX;
@@ -70,6 +71,7 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener,Mous
         Easy = new Tile(10,5);
         Medium = new Tile(10,10);
         Hard = new Tile(10,15);
+        color = new Tile(20,5);
         
         
 
@@ -153,6 +155,8 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener,Mous
         g.fillRect(Medium.x*tileSize, Medium.y*tileSize, tileSize, tileSize);
         g.setColor(Color.orange);
         g.fillRect(Hard.x*tileSize, Hard.y*tileSize, tileSize, tileSize);
+        g.setColor(Color.white);
+        g.fillRect(color.x*tileSize,color.y*tileSize,tileSize,tileSize);
     
     
             //Score
@@ -293,6 +297,7 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener,Mous
         Easy = new Tile(100,100);
         Medium = new Tile (100, 100);
         Hard = new Tile (100, 100);
+        color = new Tile(100,100);
         delay = 150;
         v1 =true ;
         v2 = false;
@@ -304,6 +309,7 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener,Mous
         Easy = new Tile(100,100);
         Medium = new Tile (100, 100);
         Hard = new Tile (100, 100);
+        color = new Tile(100,100);
         v1 = false;
         v2= true ;
         v3 = false;
@@ -315,6 +321,7 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener,Mous
         Easy = new Tile(100,100);
         Medium = new Tile (100, 100);
         Hard = new Tile (100, 100);
+        color = new Tile(100,100);
         delay= 50;
         v3= true;
         gameLoop = new Timer(delay, this);
@@ -322,6 +329,11 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener,Mous
         placeFood();
         placeBadFood();
         placeInstantFood();
+    }else if(mouseX >= color.x*tileSize && mouseX <(color.x+1)*tileSize && mouseY >= color.y*tileSize && mouseY < (color.y+1) *tileSize){
+        r = (int)(Math.random()*155)+100;
+        g = (int)(Math.random()*155)+100;
+        b = (int)(Math.random()*155)+100;
+        randomColor = new Color(r,g,b);
     }
 }    //Do Not Need
     @Override
